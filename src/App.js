@@ -64,7 +64,7 @@ class App extends Component {
     var helloWorld = "欢迎来到react世界"
 
     // console.info("hot change 2 3 4 6 b");
-
+   const {searchTerm,list} = this.state;
     return (
       <div className="App"  >
           <form>
@@ -76,7 +76,8 @@ class App extends Component {
           </form>
 
           {
-            this.state.list.filter(isSearched(this.state.searchTerm)).map( item =>{
+            list.filter(isSearched(searchTerm)).map( item =>{
+              // this.state.list.filter(isSearched(this.state.searchTerm)).map( item =>{
 
               // const onHanderDismiss = ()=>
               //   this.onDismiss(item.objectID);
