@@ -67,7 +67,7 @@ class App extends Component {
    const {searchTerm,list} = this.state;
     return (
       <div className="App"  >
-          <form>
+          {/* <form>
             <input
              type="text"
              value={searchTerm}
@@ -103,13 +103,71 @@ class App extends Component {
               )
 
             } 
-          )}
+          )} */}
+
+          <Search 
+            value={searchTerm}
+            onChange={this.onSearchChange}
+          
+          />
+
+          <Table 
+            list = {list}
+            filterPattern ={searchTerm}
+            onDismiss = {this.onDismiss}
+          
+          />
 
         <h2>{helloWorld} </h2>
         <h3>年龄：{this.state.complexUser.age}, 名字zzz：{this.state.complexUser.user} </h3>
       </div>
     );
   }
+}
+
+class Search extends Component {
+  render(){
+    const {value, onChange } = this.props;
+    return(
+      <form>
+        <input
+        type="text"
+        value={value}
+        onChange={onChange}
+        
+        />
+      </form>
+      );
+  }
+}
+
+class Table extends Component{
+  render(){
+    const {list, filterPattern, onDismiss} = this.props;
+    return(
+      <div>
+      {list.filter(isSearched(filterPattern)).map( item =>
+       
+        <div key={item.objectID}>
+          <span>{item.title} </span>
+          <span>{item.author}</span>
+          <span>
+            <button
+              onClick={()=>{onDismiss(item.objectID)}}
+              type="button"
+            
+            >
+            dismiss
+            </button>
+          </span>
+          
+        </div>
+     
+    )}
+  </div>
+  )
+  }
+
 }
 
 export default App;
