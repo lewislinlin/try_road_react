@@ -20,6 +20,14 @@ const list = [
 ]
 const complexUser = {user: "name", age: 112};
 
+function isSearched(searchTerm){
+   return function(item){
+    //  do 
+    // return true;
+    return item.title.toLowerCase().includes(searchTerm.toLowerCase());
+   }
+}
+
 class App extends Component {
 
   
@@ -29,7 +37,9 @@ class App extends Component {
     this.state = {
       list,
       complexUser,
+      searchTerm: '',
     };
+    this.onSearchChange = this.onSearchChange.bind(this);
     // this.onDismiss = this.onDismiss.bind(this); // 箭头函数，自动绑定
   }
   onDismiss=(id)=>{ // 箭头函数，自动绑定
@@ -43,6 +53,12 @@ class App extends Component {
     this.setState({list: updatedList});
   }
 
+  onSearchChange(event){
+    console.log(event.target.value);
+    this.setState({searchTerm: event.target.value})
+
+  }
+
   render() {
 
     var helloWorld = "欢迎来到react世界"
@@ -51,11 +67,19 @@ class App extends Component {
 
     return (
       <div className="App"  >
-          {
-            this.state.list.map( item =>{
+          <form>
+            <input
+             type="text"
+             onChange={this.onSearchChange}
+            
+            />
+          </form>
 
-              const onHanderDismiss = ()=>
-                this.onDismiss(item.objectID);
+          {
+            this.state.list.filter(isSearched(this.state.searchTerm)).map( item =>{
+
+              // const onHanderDismiss = ()=>
+              //   this.onDismiss(item.objectID);
                 
           
               return(
