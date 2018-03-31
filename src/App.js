@@ -97,7 +97,7 @@ class App extends Component {
   }
 
   onSearchChange(event){
-    console.log(event.target.value);
+    // console.log(event.target.value);
     this.setState({searchTerm: event.target.value})
 
   }
@@ -109,9 +109,9 @@ class App extends Component {
     // console.info("hot change 2 3 4 6 b");
   //  const {searchTerm,list} = this.state;
    const {searchTerm,result} = this.state;
-   if (!result) { 
-     return  null;
-   }
+  //  if (!result) { 
+  //    return  "返回空"; //null;
+  //  }
 
     return (
       <div className="page"  >
@@ -125,12 +125,24 @@ class App extends Component {
           </Search>
           </div>
 
-          <Table 
-            list = {result.hits}
-            filterPattern ={searchTerm}
-            onDismiss = {this.onDismiss}
+          {result 
+           ? <Table 
+                list = {result.hits}
+                filterPattern ={searchTerm}
+                onDismiss = {this.onDismiss}
+              />
+           : null
+          }
+
+         {result &&
+            <Table 
+                list = {result.hits}
+                filterPattern ={searchTerm}
+                onDismiss = {this.onDismiss}
+              />
           
-          />
+          }
+         
 
         <h2>{helloWorld} </h2>
         <h3>年龄：{this.state.complexUser.age}, 名字zzz：{this.state.complexUser.user} </h3>
