@@ -19,6 +19,14 @@ const list = [
   },
 ]
 const complexUser = {user: "name", age: 112};
+const PATH_BASE = "https://hn.algolia.com/api/v1";
+const PATH_SEARCH = '/search';
+const PARAM_SEARCH = 'query=';
+
+const DEFAULT_QUERY = "aaa" //"redux"
+
+const url = PATH_BASE + PATH_SEARCH + '?' + PARAM_SEARCH + DEFAULT_QUERY
+
 
 function isSearched(searchTerm){
    return function(item){
@@ -35,12 +43,14 @@ class App extends Component {
     
     super(props);
     this.state = {
-      list,
+      result: null,
       complexUser,
-      searchTerm: '',
+      searchTerm: DEFAULT_QUERY,
     };
     this.onSearchChange = this.onSearchChange.bind(this);
     // this.onDismiss = this.onDismiss.bind(this); // 箭头函数，自动绑定
+    this.setSearchTopStroies = this.setSearchTopStroies.bind(this);
+    this.fetchSearchTopStroies = this.fetchSearchTopStroies.bind(this);
   }
   onDismiss=(id)=>{ // 箭头函数，自动绑定
   // onDismiss(id){
@@ -51,6 +61,25 @@ class App extends Component {
     const updatedList = this.state.list.filter(isNotId);
     console.log(this);
     this.setState({list: updatedList});
+  }
+
+  setSearchTopStroies(result){
+    this.setState({result});
+
+  }
+
+  fetchSearchTopStroies(searchTerm){
+    fetch(`${PATH_BASE}${PATH_SEARCH}?${PARAM_SEARCH}${searchTerm}`)
+      .then(response => response.json())
+      .then(result => this.setSearchTopStroies(result))
+      .catch(e => e);
+
+  }
+
+  componentDidMount(){
+    const {searchTerm} = this.state;
+    this.fetchSearchTopStroies(searchTerm);
+
   }
 
   onSearchChange(event){
@@ -64,46 +93,14 @@ class App extends Component {
     var helloWorld = "欢迎来到react世界"
 
     // console.info("hot change 2 3 4 6 b");
-   const {searchTerm,list} = this.state;
+  //  const {searchTerm,list} = this.state;
+   const {searchTerm,result} = this.state;
+   if (!result) { 
+     return  null;
+   }
+
     return (
       <div className="page"  >
-          {/* <form>
-            <input
-             type="text"
-             value={searchTerm}
-             onChange={this.onSearchChange}
-            
-            />
-          </form>
-
-          {
-            list.filter(isSearched(searchTerm)).map( item =>{
-              // this.state.list.filter(isSearched(this.state.searchTerm)).map( item =>{
-
-              // const onHanderDismiss = ()=>
-              //   this.onDismiss(item.objectID);
-                
-          
-              return(
-              <div key={item.objectID}>
-                <span>{item.title} </span>
-                <span>{item.author}</span>
-                <span>
-                  <button
-                    onClick={()=>{this.onDismiss(item.objectID)}}
-                    // onClick={this.onDismiss(item.objectID)}// 立即执行
-                    // onClick={this.onDismiss}// 点击执行，但不传参
-                    // onClick={onHanderDismiss}
-                    type="button"
-                  
-                  ></button>
-                </span>
-                
-              </div>
-              )
-
-            } 
-          )} */}
 
        <div className="interactions">
           <Search 
@@ -115,7 +112,7 @@ class App extends Component {
           </div>
 
           <Table 
-            list = {list}
+            list = {result.hits}
             filterPattern ={searchTerm}
             onDismiss = {this.onDismiss}
           
