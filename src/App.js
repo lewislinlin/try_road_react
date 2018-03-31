@@ -126,28 +126,42 @@ class App extends Component {
   }
 }
 
-class Search extends Component {
-  render(){
-    const {value, onChange, children } = this.props;
-    return(
-      <form>
+// class Search extends Component {
+//   render(){
+//     const {value, onChange, children } = this.props;
+//     return(
+//       <form>
         
-        <input
+//         <input
+//         type="text"
+//         value={value}
+//         onChange={onChange}
+        
+//         />
+//         {children}
+//       </form>
+//       );
+//   }
+// }
+
+function Search({value,onChange,children}){
+  // const {value,onChange,children} = props
+  return(
+    <form>
+       {children}
+       <input
         type="text"
         value={value}
         onChange={onChange}
-        
         />
-        {children}
-      </form>
-      );
-  }
+   </form>
+  );
 }
 
-class Table extends Component{
-  render(){
-    const {list, filterPattern, onDismiss} = this.props;
-    return(
+const Table = ({list, filterPattern, onDismiss})=>
+  // render(){
+    // const {list, filterPattern, onDismiss} = this.props;
+    // return(
       <div>
       {list.filter(isSearched(filterPattern)).map( item =>
        
@@ -155,22 +169,70 @@ class Table extends Component{
           <span>{item.title} </span>
           <span>{item.author}</span>
           <span>
-            <button
+            {/* <button
               onClick={()=>{onDismiss(item.objectID)}}
               type="button"
             
             >
             dismiss
-            </button>
+            </button> */}
+            <Button
+            onClick={()=>{onDismiss(item.objectID)}}
+            >
+            dismissButton
+            </Button>
           </span>
           
         </div>
      
     )}
   </div>
-  )
-  }
+  // )
+  // }
+
+
+
+// class Button extends Component{
+//   render(){
+//     const {
+//       onClick,
+//        className='',
+//         children,
+//       } = this.props;
+ 
+//     return(
+//       <button
+//         onClick = {onClick}
+//         className = {className}
+//         type = "button" 
+      
+//       >
+//         {children}
+//       </button>
+//     )
+//   }
+
+// }
+
+const Button = (
+  {
+  onClick,
+   className='',
+    children
+  })=>{
+//  do somthing
+ 
+    return(
+      <button
+        onClick = {onClick}
+        className = {className}
+        type = "button" 
+      
+      >
+        {children}
+      </button>
+    )
+  
 
 }
-
 export default App;
