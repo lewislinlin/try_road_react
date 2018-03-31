@@ -66,7 +66,7 @@ class App extends Component {
     // console.info("hot change 2 3 4 6 b");
    const {searchTerm,list} = this.state;
     return (
-      <div className="App"  >
+      <div className="page"  >
           {/* <form>
             <input
              type="text"
@@ -105,12 +105,14 @@ class App extends Component {
             } 
           )} */}
 
+       <div className="interactions">
           <Search 
             value={searchTerm}
             onChange={this.onSearchChange}
           >
            <button type="button" >Search222</button>
           </Search>
+          </div>
 
           <Table 
             list = {list}
@@ -157,18 +159,19 @@ function Search({value,onChange,children}){
    </form>
   );
 }
-
+const smallColumn={width: "10%"};
 const Table = ({list, filterPattern, onDismiss})=>
   // render(){
     // const {list, filterPattern, onDismiss} = this.props;
+    
     // return(
-      <div>
+      <div className="table">
       {list.filter(isSearched(filterPattern)).map( item =>
        
-        <div key={item.objectID}>
-          <span>{item.title} </span>
-          <span>{item.author}</span>
-          <span>
+        <div key={item.objectID} className="table-row">
+          <span style={{width: '40%' }}>{item.title} </span>
+          <span style={{width: '40%' }}>{item.author}</span>
+          <span style={{smallColumn }}>
             {/* <button
               onClick={()=>{onDismiss(item.objectID)}}
               type="button"
@@ -178,6 +181,7 @@ const Table = ({list, filterPattern, onDismiss})=>
             </button> */}
             <Button
             onClick={()=>{onDismiss(item.objectID)}}
+            className="button-inline"
             >
             dismissButton
             </Button>
