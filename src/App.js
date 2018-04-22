@@ -22,8 +22,11 @@ const complexUser = {user: "name", age: 112};
 const PATH_BASE = "https://hn.algolia.com/api/v1";
 const PATH_SEARCH = '/search';
 const PARAM_SEARCH = 'query=';
+const PARAM_PAGE = 'page=';
 
 const DEFAULT_QUERY = "aaa" //"redux"
+const DEFAULT_HPP = '2'
+const PARAM_HPP = 'hitsPerPage='
 
 // const url = PATH_BASE + PATH_SEARCH + '?' + PARAM_SEARCH + DEFAULT_QUERY
 
@@ -79,12 +82,28 @@ class App extends Component {
   }
 
   setSearchTopStroies(result){
-    this.setState({result});
+    
+    const {hits, page} = result;
+    const oldHits = page !== 0 
+      ? this.state.result.hits  
+      : [];
+      const updatedHits = [
+        ...oldHits,
+        ...hits
+      ];
+      // this.setState({result});
+      this.setState({
+        result: {hits: updatedHits, page}
+      });
+
+
 
   }
 
-  fetchSearchTopStroies(searchTerm){
-    fetch(`${PATH_BASE}${PATH_SEARCH}?${PARAM_SEARCH}${searchTerm}`)
+  fetchSearchTopStroies(searchTerm, page = 0){
+    const url = `${PATH_BASE}${PATH_SEARCH}?${PARAM_SEARCH}${searchTerm}&${PARAM_PAGE}${page}&${PARAM_HPP}${DEFAULT_HPP}`
+    console.info(url)
+    fetch(url)
       .then(response => response.json())
       .then(result => this.setSearchTopStroies(result))
       .catch(e => e);
@@ -117,6 +136,7 @@ class App extends Component {
     // console.info("hot change 2 3 4 6 b");
   //  const {searchTerm,list} = this.state;
    const {searchTerm,result} = this.state;
+   const page = (result && result.page ) || 0
   //  if (!result) { 
   //    return  "返回空"; //null;
   //  }
@@ -151,6 +171,12 @@ class App extends Component {
               />
           
           }
+          <div className="interactions">
+           <Button onClick = {()=> this.fetchSearchTopStroies(searchTerm, page + 1)}>
+             更多
+           </Button>
+
+          </div>
          
 
         <h2>{helloWorld} </h2>
