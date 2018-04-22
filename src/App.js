@@ -49,6 +49,7 @@ class App extends Component {
     };
     this.onSearchChange = this.onSearchChange.bind(this);
     // this.onDismiss = this.onDismiss.bind(this); // 箭头函数，自动绑定
+    this.onSearchSubmit = this.onSearchSubmit.bind(this);
     this.setSearchTopStroies = this.setSearchTopStroies.bind(this);
     this.fetchSearchTopStroies = this.fetchSearchTopStroies.bind(this);
   }
@@ -96,6 +97,13 @@ class App extends Component {
 
   }
 
+  onSearchSubmit(event){
+    const {searchTerm} = this.state;
+    this.fetchSearchTopStroies(searchTerm);
+    console.info(searchTerm);
+    event.preventDefault;
+  }
+
   onSearchChange(event){
     // console.log(event.target.value);
     this.setState({searchTerm: event.target.value})
@@ -120,15 +128,16 @@ class App extends Component {
           <Search 
             value={searchTerm}
             onChange={this.onSearchChange}
+            onSubmit = {this.onSearchSubmit} 
           >
-           <button type="button" >Search222</button>
+           Search222
           </Search>
           </div>
 
           {result 
            ? <Table 
                 list = {result.hits}
-                filterPattern ={searchTerm}
+                // filterPattern ={searchTerm}
                 onDismiss = {this.onDismiss}
               />
            : null
@@ -137,7 +146,7 @@ class App extends Component {
          {result &&
             <Table 
                 list = {result.hits}
-                filterPattern ={searchTerm}
+                // filterPattern ={searchTerm}
                 onDismiss = {this.onDismiss}
               />
           
@@ -169,27 +178,31 @@ class App extends Component {
 //   }
 // }
 
-function Search({value,onChange,children}){
+function Search({value,onChange,onSubmit,children}){
   // const {value,onChange,children} = props
   return(
-    <form>
-       {children}
+    <form onSubmit = {onSubmit}>
+       {/* {children} */}
        <input
         type="text"
         value={value}
         onChange={onChange}
         />
+        <button type="submit"> 
+          {children}
+        </button>
    </form>
   );
 }
 const smallColumn={width: "10%"};
-const Table = ({list, filterPattern, onDismiss})=>
+const Table = ({list, onDismiss})=>
   // render(){
     // const {list, filterPattern, onDismiss} = this.props;
     
     // return(
       <div className="table">
-      {list.filter(isSearched(filterPattern)).map( item =>
+      {/* {list.filter(isSearched(filterPattern)).map( item => */}
+        {list.map( item =>
        
         <div key={item.objectID} className="table-row">
           <span style={{width: '40%' }}>{item.title} </span>
