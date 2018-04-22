@@ -46,17 +46,23 @@ class App extends Component {
     
     super(props);
     this.state = {
-      result: null,
+      // result: null,
+      results: null,
+      searchKey: '',
       complexUser,
       searchTerm: DEFAULT_QUERY,
     };
     this.onSearchChange = this.onSearchChange.bind(this);
     // this.onDismiss = this.onDismiss.bind(this); // 箭头函数，自动绑定
     this.onSearchSubmit = this.onSearchSubmit.bind(this);
+    this.needToSearchTopStroies = this.needToSearchTopStroies.bind(this);
     this.setSearchTopStroies = this.setSearchTopStroies.bind(this);
     this.fetchSearchTopStroies = this.fetchSearchTopStroies.bind(this);
   }
   onDismiss=(id)=>{ // 箭头函数，自动绑定
+
+    const {searchKey, results} = this.state;
+    const {hits, page} = results[searchKey];
   // onDismiss(id){
     // function isNotId(item){
     //   return item.objectID !== id
@@ -66,17 +72,22 @@ class App extends Component {
     // const updatedList = this.state.list.filter(isNotId);
     console.log(this);
     // this.setState({list: updatedList});
-    const updatedList = this.state.result.hits.filter(isNotId);
+    // const updatedList = this.state.result.hits.filter(isNotId);
     // this.state.result.hits = updatedList //don't do this: to change data struct
-    const updatedHits = {hits: updatedList};
+    const updatedHits = hits.filter(isNotId);
     // const updatedResult = Object.assign({}, this.state.result, updatedHits);
     // this.setState(
     //   {result: updatedResult}
     // )
     // ... 扩展操作符
     this.setState(
-      {result: { ...this.state.result, ...updatedHits}}
-    )
+      // {result: { ...this.state.result, ...updatedHits}}
+      {results:{
+        ...results,
+        [searchKey]:{hits: updatedHits, page}
+      }
+    }
+    );
     
    
   }
@@ -84,8 +95,12 @@ class App extends Component {
   setSearchTopStroies(result){
     
     const {hits, page} = result;
-    const oldHits = page !== 0 
-      ? this.state.result.hits  
+    const {searchKey, results} = this.state
+    // const oldHits = page !== 0 
+    //   ? this.state.result.hits  
+    //   : [];
+      const oldHits = results && results[searchKey] 
+      ? results[searchKey].hits  
       : [];
       const updatedHits = [
         ...oldHits,
@@ -93,11 +108,19 @@ class App extends Component {
       ];
       // this.setState({result});
       this.setState({
-        result: {hits: updatedHits, page}
+        // result: {hits: updatedHits, page}
+        results: {
+          ...results,
+          [searchKey]: {hits: updatedHits, page}
+        }
       });
 
 
 
+  }
+
+  needToSearchTopStroies(searchTerm){
+    return !this.state.results[searchTerm];
   }
 
   fetchSearchTopStroies(searchTerm, page = 0){
@@ -112,13 +135,17 @@ class App extends Component {
 
   componentDidMount(){
     const {searchTerm} = this.state;
+    this.setState({searchKey: searchTerm});
     this.fetchSearchTopStroies(searchTerm);
 
   }
 
   onSearchSubmit(event){
     const {searchTerm} = this.state;
+    this.setState({searchKey: searchTerm});
+    if (this.needToSearchTopStroies(searchTerm)){
     this.fetchSearchTopStroies(searchTerm);
+    }
     // console.info(searchTerm);
     event.preventDefault();
   }
@@ -135,8 +162,16 @@ class App extends Component {
 
     // console.info("hot change 2 3 4 6 b");
   //  const {searchTerm,list} = this.state;
-   const {searchTerm,result} = this.state;
-   const page = (result && result.page ) || 0
+   const {searchTerm,results, searchKey} = this.state;
+  //  const page = (result && result.page ) || 0
+   const page = (results 
+                && results[searchKey]
+                && results[searchKey].page ) || 0;
+  const list = (results && 
+                results[searchKey] && 
+                results[searchKey].hits) || [];
+
+                
   //  if (!result) { 
   //    return  "返回空"; //null;
   //  }
@@ -154,25 +189,17 @@ class App extends Component {
           </Search>
           </div>
 
-          {result 
-           ? <Table 
-                list = {result.hits}
-                // filterPattern ={searchTerm}
-                onDismiss = {this.onDismiss}
-              />
-           : null
-          }
-
-         {result &&
+         {list &&
             <Table 
-                list = {result.hits}
+                // list = {result.hits}
+                list = {list}
                 // filterPattern ={searchTerm}
                 onDismiss = {this.onDismiss}
               />
           
           }
           <div className="interactions">
-           <Button onClick = {()=> this.fetchSearchTopStroies(searchTerm, page + 1)}>
+           <Button onClick = {()=> this.fetchSearchTopStroies(searchKey, page + 1)}>
              更多
            </Button>
 
