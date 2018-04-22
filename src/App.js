@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
 // import logo from './logo.svg';
 import './App.css';
-
+import {
+  PATH_BASE  , PATH_SEARCH , PARAM_SEARCH , PARAM_PAGE , DEFAULT_QUERY ,DEFAULT_HPP ,PARAM_HPP
+ }
+ from './constants';
 // const list = [
 //   {
 //     title: "1mm1",
@@ -19,14 +22,7 @@ import './App.css';
 //   },
 // ]
 const complexUser = {user: "name", age: 112};
-const PATH_BASE = "https://hn.algolia.com/api/v1";
-const PATH_SEARCH = '/search';
-const PARAM_SEARCH = 'query=';
-const PARAM_PAGE = 'page=';
 
-const DEFAULT_QUERY = "aaa" //"redux"
-const DEFAULT_HPP = '2'
-const PARAM_HPP = 'hitsPerPage='
 
 // const url = PATH_BASE + PATH_SEARCH + '?' + PARAM_SEARCH + DEFAULT_QUERY
 
