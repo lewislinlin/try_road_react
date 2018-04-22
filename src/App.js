@@ -2,22 +2,22 @@ import React, { Component } from 'react';
 // import logo from './logo.svg';
 import './App.css';
 
-const list = [
-  {
-    title: "1mm1",
-    url: "12",
-    author: "12",
-    point: "1",
-    objectID: "12",
-  },
-  {
-    title: "ammms",
-    url: "as",
-    author: "as",
-    point: "as",
-    objectID: "as",
-  },
-]
+// const list = [
+//   {
+//     title: "1mm1",
+//     url: "12",
+//     author: "12",
+//     point: "1",
+//     objectID: "12",
+//   },
+//   {
+//     title: "ammms",
+//     url: "as",
+//     author: "as",
+//     point: "as",
+//     objectID: "as",
+//   },
+// ]
 const complexUser = {user: "name", age: 112};
 const PATH_BASE = "https://hn.algolia.com/api/v1";
 const PATH_SEARCH = '/search';
@@ -25,16 +25,16 @@ const PARAM_SEARCH = 'query=';
 
 const DEFAULT_QUERY = "aaa" //"redux"
 
-const url = PATH_BASE + PATH_SEARCH + '?' + PARAM_SEARCH + DEFAULT_QUERY
+// const url = PATH_BASE + PATH_SEARCH + '?' + PARAM_SEARCH + DEFAULT_QUERY
 
 
-function isSearched(searchTerm){
-   return function(item){
-    //  do 
-    // return true;
-    return item.title.toLowerCase().includes(searchTerm.toLowerCase());
-   }
-}
+// function isSearched(searchTerm){
+//    return function(item){
+//     //  do 
+//     // return true;
+//     return item.title.toLowerCase().includes(searchTerm.toLowerCase());
+//    }
+// }
 
 class App extends Component {
 
@@ -100,8 +100,8 @@ class App extends Component {
   onSearchSubmit(event){
     const {searchTerm} = this.state;
     this.fetchSearchTopStroies(searchTerm);
-    console.info(searchTerm);
-    event.preventDefault;
+    // console.info(searchTerm);
+    event.preventDefault();
   }
 
   onSearchChange(event){
