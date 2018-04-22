@@ -5,6 +5,7 @@ import {
   PATH_BASE  , PATH_SEARCH , PARAM_SEARCH , PARAM_PAGE , DEFAULT_QUERY ,DEFAULT_HPP ,PARAM_HPP
  }
  from './constants';
+import fetch from 'isomorphic-fetch';
 // const list = [
 //   {
 //     title: "1mm1",
@@ -155,7 +156,7 @@ class App extends Component {
 
   render() {
 
-    var helloWorld = "欢迎来到react世界"
+    var helloWorld = "欢迎来到react世界ss"
 
     // console.info("hot change 2 3 4 6 b");
   //  const {searchTerm,list} = this.state;
@@ -208,8 +209,9 @@ class App extends Component {
           </div>
          
 
-        <h2>{helloWorld} </h2>
+        
         <h3>年龄：{this.state.complexUser.age}, 名字zzz：{this.state.complexUser.user} </h3>
+        <h2>{helloWorld} </h2>
       </div>
     );
   }
@@ -331,3 +333,9 @@ const Button = (
 
 }
 export default App;
+
+export {
+  Table,
+  Button,
+  Search
+};
