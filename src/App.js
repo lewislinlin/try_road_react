@@ -19,7 +19,7 @@ import './App.css';
 //   },
 // ]
 const complexUser = {user: "name", age: 112};
-const PATH_BASE = "https://hn.algolia.com/api/v1";
+const PATH_BASE = "https://hn.algolia.com/api/v1333";
 const PATH_SEARCH = '/search';
 const PARAM_SEARCH = 'query=';
 const PARAM_PAGE = 'page=';
@@ -51,6 +51,7 @@ class App extends Component {
       searchKey: '',
       complexUser,
       searchTerm: DEFAULT_QUERY,
+      error: null,
     };
     this.onSearchChange = this.onSearchChange.bind(this);
     // this.onDismiss = this.onDismiss.bind(this); // 箭头函数，自动绑定
@@ -129,7 +130,7 @@ class App extends Component {
     fetch(url)
       .then(response => response.json())
       .then(result => this.setSearchTopStroies(result))
-      .catch(e => e);
+      .catch(e => this.setState({error: e}));
 
   }
 
@@ -162,7 +163,7 @@ class App extends Component {
 
     // console.info("hot change 2 3 4 6 b");
   //  const {searchTerm,list} = this.state;
-   const {searchTerm,results, searchKey} = this.state;
+   const {searchTerm,results, searchKey, error} = this.state;
   //  const page = (result && result.page ) || 0
    const page = (results 
                 && results[searchKey]
@@ -175,6 +176,9 @@ class App extends Component {
   //  if (!result) { 
   //    return  "返回空"; //null;
   //  }
+    // if (error){
+    //   return <p> 出错了！</p>;
+    // }
 
     return (
       <div className="page"  >
@@ -189,7 +193,9 @@ class App extends Component {
           </Search>
           </div>
 
-         {list &&
+         {error ?
+            <p> 出错了！</p>
+           :
             <Table 
                 // list = {result.hits}
                 list = {list}
