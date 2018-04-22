@@ -19,7 +19,7 @@ import './App.css';
 //   },
 // ]
 const complexUser = {user: "name", age: 112};
-const PATH_BASE = "https://hn.algolia.com/api/v1333";
+const PATH_BASE = "https://hn.algolia.com/api/v1";
 const PATH_SEARCH = '/search';
 const PARAM_SEARCH = 'query=';
 const PARAM_PAGE = 'page=';
